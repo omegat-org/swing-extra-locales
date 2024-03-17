@@ -1,0 +1,27 @@
+name: Run Gradle check
+
+on:
+  push:
+    branches:
+      - main
+      - releases/*
+  pull_request:
+
+jobs:
+  gradle-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '8'
+    - uses: kiancross/checkstyle-annotations-action@v1
+    - uses: eskatos/gradle-command-action@v2
+      name: gradle check
+      with:
+        arguments: check
+    - name: publish coveralls
+      run: ./gradlew coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
