@@ -1,8 +1,10 @@
 [versions]
 junit5 = "5.8.2"
+mnemonics = "1.2-SNAPSHOT"
 
 [libraries]
 junit-jupiter = {group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit5"}
+mnemonics = {group = "org.omegat", name = "lib-mnemonics", version.ref = "mnemonics"}
 
 [plugins]
 spotbugs = {id = "com.github.spotbugs", version = "5.1.3"}

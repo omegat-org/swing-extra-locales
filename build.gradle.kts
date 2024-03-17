@@ -35,9 +35,14 @@ if (dotgit.exists()) {
 
 repositories {
     mavenCentral()
+    mavenLocal()
+    // Sonatype OSSRH snapshots
+    maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots")}
+    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots")}
 }
 
 dependencies {
+    implementation(libs.mnemonics)
     testImplementation(libs.junit.jupiter)
 }
 
@@ -55,7 +60,7 @@ tasks.named<Test>("test") {
 
 tasks.jar {
     manifest {
-        attributes("Automatic-Module-Name" to "org.omegat.swing-extra-locales")
+        attributes("Automatic-Module-Name" to "org.omegat.swing.extra.locales")
     }
 }
 

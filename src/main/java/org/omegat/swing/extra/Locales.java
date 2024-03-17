@@ -1,5 +1,7 @@
 package org.omegat.swing.extra;
 
+import org.openide.awt.Mnemonics;
+
 import javax.swing.UIManager;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -42,9 +44,45 @@ public final class Locales {
         for (String key: basicResource.keySet()) {
             String val = basicResource.getString(key);
             if (!val.isEmpty()) {
-                UIManager.put(key, val);
+                if (key.endsWith(".textAndMnemonic")) {
+                    processMnemonics(key, val);
+                } else {
+                    UIManager.put(key, val);
+                }
             }
         }
     }
 
+    private static final String[][] postfixes = {
+            {".nameText", ".mnemonic", ".displayedMnemonicIndex"},
+            {"Text", "Mnemonic", "MnemonicIndex"}
+    };
+
+    private static void processMnemonics(String key, String val) {
+        String prefix = key.substring(0, key.length() - ".textAndMnemonic".length() - 1);
+        int i = prefix.lastIndexOf('.') < 0 ? 0 : 1;
+        int n = Mnemonics.findMnemonicAmpersand(val);
+        if (n < 0) {
+            // no mnemonic config
+            UIManager.put(prefix + postfixes[i][0], val);
+        } else {
+            UIManager.put(prefix + postfixes[i][0], val.substring(0, n) + val.substring(n + 1));
+            int ch = getMnemonicChr(val.charAt(n));
+            if (ch > 0) {
+                UIManager.put(prefix + postfixes[i][1], Integer.toString(ch, 10));
+                UIManager.put(prefix + postfixes[i][2], n);
+            }
+        }
+    }
+
+    private static int getMnemonicChr(char ch) {
+        if ((ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')) {
+            return ch;
+        } else if (ch >= 'a' && ch <= 'z') {
+            return ch + ('A' - 'a');
+        } else {
+            // it's non-latin, getting the latin correspondence
+            return Mnemonics.getLatinKeycode(ch, locale);
+        }
+    }
 }
