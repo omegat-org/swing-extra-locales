@@ -55,7 +55,7 @@ tasks.named<Test>("test") {
 
 tasks.jar {
     manifest {
-        attributes("Automatic-Module-Name" to "tokyo.northside.texparser")
+        attributes("Automatic-Module-Name" to "org.omegat.swing-extra-locales")
     }
 }
 
@@ -63,12 +63,12 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            groupId = "tokyo.northside"
-            artifactId = "texparser"
+            groupId = "org.omegat"
+            artifactId = "swing-extra-locales"
             pom {
-                name.set("example")
-                description.set("Example Library")
-                url.set("https://codeberg.org/miurahr/example")
+                name.set("swing-extra-locales")
+                description.set("Extra locales for Java Standard UI components")
+                url.set("https://codeberg.org/miurahr/java-swing-extra-locales")
                 licenses {
                     license {
                         name.set("The GNU General Public License, Version 3")
@@ -84,9 +84,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:git://codeberg.org/miurahr/example.git")
-                    developerConnection.set("scm:git:git://codeberg.org/miurahr/example.git")
-                    url.set("https://codeberg.org/miurahr/example")
+                    connection.set("scm:git:git://codeberg.org/miurahr/java-swing-extra-locales.git")
+                    developerConnection.set("scm:git:git://codeberg.org/miurahr/java-swing-extra-locales.git")
+                    url.set("https://codeberg.org/miurahr/java-swing-extra-locales")
                 }
             }
         }

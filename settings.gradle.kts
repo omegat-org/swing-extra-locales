@@ -1,1 +1,1 @@
-rootProject.name = "gradle-project-skeleton"
+rootProject.name = "swing-extra-locales"
