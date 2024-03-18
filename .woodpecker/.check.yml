@@ -17,5 +17,5 @@ steps:
   build:
     image: adoptopenjdk/openjdk11:alpine
     commands:
-      - apk add --no-cache xvfb xvfb-run libsm-dev libxrender libxext-dev libxtst-dev libxcb-dev ttf-dejavu font-xfree86-type1 font-sun-misc
+      - apk add --no-cache git xvfb xvfb-run libsm-dev libxrender libxext-dev libxtst-dev libxcb-dev ttf-dejavu font-xfree86-type1 font-sun-misc
       - xvfb-run -a --server-args='-screen 0, 1024x768x24' ./gradlew --no-daemon clean check
