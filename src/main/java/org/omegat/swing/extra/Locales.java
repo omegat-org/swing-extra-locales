@@ -13,7 +13,7 @@ public final class Locales {
     // JRE supports {"zh_CN", "zh_TW", "en", "de", "fr", "it", "es", "pt_BR", "ko", "ja", "sv"};
     private static Boolean initialized = false;
     private static final Locale locale;
-    private static final String[] supported = {"ru", "ca"};
+    private static final String[] supported = {"ru"};
 
     static {
         locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country"));
