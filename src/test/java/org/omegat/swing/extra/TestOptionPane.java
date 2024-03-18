@@ -39,6 +39,31 @@ public class TestOptionPane extends AssertJSwingJUnitTestCase {
         window.dialog().button(new JButtonMatcher(1)).requireText("Нет");
         window.dialog().button(new JButtonMatcher(2)).requireText("Отмена");
         window.dialog().label("OptionPane.label").requireText("Confirm");
+        window.dialog().button(new JButtonMatcher(0)).click();
+    }
+
+    @Test
+    public void testOptionPaneMessageDialog() {
+        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(parent, "Message"));
+        window.dialog().requireVisible();
+        window.dialog().requireModal();
+        assertEquals("Сообщение", window.dialog().target().getTitle());
+        window.dialog().button(new JButtonMatcher(0)).requireText("OK");
+        window.dialog().label("OptionPane.label").requireText("Message");
+        window.dialog().button(new JButtonMatcher(0)).click();
+    }
+
+    @Test
+    public void testOptionPaneInputDialog() {
+        SwingUtilities.invokeLater(() -> JOptionPane.showInputDialog(parent, "Message"));
+        window.dialog().requireVisible();
+        window.dialog().requireModal();
+        assertEquals("ввод", window.dialog().target().getTitle());
+        window.dialog().button(new JButtonMatcher(0)).requireText("OK");
+        window.dialog().button(new JButtonMatcher(1)).requireText("Отмена");
+        window.dialog().label("OptionPane.label").requireText("Message");
+        window.dialog().textBox().enterText("sample");
+        window.dialog().button(new JButtonMatcher(0)).click();
     }
 
     private static class JButtonMatcher extends GenericTypeMatcher<JButton> {
