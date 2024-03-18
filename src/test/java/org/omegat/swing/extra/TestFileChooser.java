@@ -1,15 +1,14 @@
 package org.omegat.swing.extra;
 
+import static org.junit.Assert.assertEquals;
+
+import java.awt.*;
+import java.util.Locale;
+import javax.swing.*;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Locale;
-
-import static org.junit.Assert.assertEquals;
 
 public class TestFileChooser extends AssertJSwingJUnitTestCase {
 

@@ -1,10 +1,9 @@
 package org.omegat.swing.extra;
 
-import org.openide.awt.Mnemonics;
-
-import javax.swing.UIManager;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javax.swing.UIManager;
+import org.openide.awt.Mnemonics;
 
 /**
  * @author Hiroshi Miura
@@ -20,8 +19,7 @@ public final class Locales {
         locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country"));
     }
 
-    private Locales() {
-    }
+    private Locales() {}
 
     @SuppressWarnings("unused")
     public static void initialize() {
@@ -52,7 +50,7 @@ public final class Locales {
     }
 
     private static void loadLocalizeOverrides(ResourceBundle basicResource) {
-        for (String key: basicResource.keySet()) {
+        for (String key : basicResource.keySet()) {
             String val = basicResource.getString(key);
             if (!val.isEmpty()) {
                 if (key.endsWith(".textAndMnemonic")) {
@@ -65,8 +63,8 @@ public final class Locales {
     }
 
     private static final String[][] postfixes = {
-            {".nameText", ".mnemonic", ".displayedMnemonicIndex"},
-            {"Text", "Mnemonic", "MnemonicIndex"}
+        {".nameText", ".mnemonic", ".displayedMnemonicIndex"},
+        {"Text", "Mnemonic", "MnemonicIndex"}
     };
 
     private static void processMnemonics(String key, String val) {
