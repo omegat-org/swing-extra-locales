@@ -43,7 +43,10 @@ repositories {
 
 dependencies {
     implementation(libs.mnemonics)
-    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.assertj.swing.junit) {
+        exclude("junit")
+    }
+    testImplementation(libs.junit)
 }
 
 java {
@@ -52,10 +55,6 @@ java {
     }
     withSourcesJar()
     withJavadocJar()
-}
-
-tasks.named<Test>("test") {
-    useJUnitPlatform()
 }
 
 tasks.jar {

@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
  * @author Hiroshi Miura
  */
 public final class Locales {
+    private static final String BUNDLE = "org/omegat/swing/extra/basic";
     // JRE supports {"zh_CN", "zh_TW", "en", "de", "fr", "it", "es", "pt_BR", "ko", "ja", "sv"};
     private static Boolean initialized = false;
     private static final Locale locale;
@@ -22,6 +23,7 @@ public final class Locales {
     private Locales() {
     }
 
+    @SuppressWarnings("unused")
     public static void initialize() {
         if (initialized) {
             return;
@@ -32,15 +34,24 @@ public final class Locales {
             }
             for (String s : supported) {
                 if (locale.equals(new Locale(s))) {
-                    loadLocalizeOverrides();
+                    ResourceBundle basicResource = ResourceBundle.getBundle(BUNDLE);
+                    loadLocalizeOverrides(basicResource);
                 }
             }
             initialized = true;
         }
     }
 
-    private static void loadLocalizeOverrides() {
-        ResourceBundle basicResource = ResourceBundle.getBundle("org/omegat/swing/extra/basic");
+    /**
+     * Initializer for test.
+     * @param locale locale for test (russian).
+     */
+    static void initialize(Locale locale) {
+        ResourceBundle basicResource = ResourceBundle.getBundle(BUNDLE, locale);
+        loadLocalizeOverrides(basicResource);
+    }
+
+    private static void loadLocalizeOverrides(ResourceBundle basicResource) {
         for (String key: basicResource.keySet()) {
             String val = basicResource.getString(key);
             if (!val.isEmpty()) {
