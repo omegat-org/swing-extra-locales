@@ -2,7 +2,10 @@ package org.omegat.swing.extra;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.swing.UIManager;
+import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.synth.SynthLookAndFeel;
+
 import org.openide.awt.Mnemonics;
 
 /**
@@ -10,11 +13,23 @@ import org.openide.awt.Mnemonics;
  */
 public final class ExtraLocales {
     private static final String EXTRA_BASIC = "org/omegat/swing/extra/basic";
+    // LAF specific
+    private static final String AQUA_LAF = "Aqua";
+    private static final String EXTRA_AQUA = "org/omegat/swing/extra/aqua";
+    private static final String GTK_LAF = "GTK";
     private static final String EXTRA_GTK = "org/omegat/swing/extra/gtk";
+    private static final String WINDOWS_LAF = "Windows";
+    private static final String EXTRA_WINDOWS = "org/omegat/swing/extra/windows";
+    private static final String MOTIF_LAF = "Motif";
+    private static final String EXTRA_MOTIF = "org/omegat/swing/extra/motif";
+    private static final String EXTRA_SYNTH = "org/omegat/swing/extra/synth";
+    private static final String EXTRA_METAL = "org/omegat/swing/extra/metal";
+
     // JRE supports {"zh_CN", "zh_TW", "en", "de", "fr", "it", "es", "pt_BR", "ko", "ja", "sv"};
-    private static Boolean initialized = false;
     private static final Locale locale;
     private static final String[] supported = {"ru"};
+
+    private static Boolean initialized = false;
 
     static {
         locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country"));
@@ -48,8 +63,31 @@ public final class ExtraLocales {
     static void initialize(Locale locale) {
         ResourceBundle basicResource = ResourceBundle.getBundle(EXTRA_BASIC, locale);
         loadLocalizeOverrides(basicResource);
-        ResourceBundle gtkResource = ResourceBundle.getBundle(EXTRA_GTK);
-        loadLocalizeOverrides(gtkResource);
+        lafInitialize(locale);
+    }
+
+    private static void lafInitialize(Locale locale) {
+        LookAndFeel laf = UIManager.getLookAndFeel();
+        String id = laf.getID();
+        if (AQUA_LAF.endsWith(id)) {
+            ResourceBundle aquaResource = ResourceBundle.getBundle(EXTRA_AQUA, locale);
+            loadLocalizeOverrides(aquaResource);
+        } else if (GTK_LAF.equals(id)) {
+            ResourceBundle gtkResource = ResourceBundle.getBundle(EXTRA_GTK, locale);
+            loadLocalizeOverrides(gtkResource);
+        } else if (WINDOWS_LAF.equals(id)) {
+            ResourceBundle windowsResource = ResourceBundle.getBundle(EXTRA_WINDOWS, locale);
+            loadLocalizeOverrides(windowsResource);
+        } else if (MOTIF_LAF.equals(id)) {
+            ResourceBundle motifResource = ResourceBundle.getBundle(EXTRA_MOTIF, locale);
+            loadLocalizeOverrides(motifResource);
+        } else if (laf instanceof SynthLookAndFeel) {
+            ResourceBundle bundle = ResourceBundle.getBundle(EXTRA_SYNTH, locale);
+            loadLocalizeOverrides(bundle);
+        } else if (laf instanceof MetalLookAndFeel) {
+            ResourceBundle bundle = ResourceBundle.getBundle(EXTRA_METAL, locale);
+            loadLocalizeOverrides(bundle);
+        }
     }
 
     private static void loadLocalizeOverrides(ResourceBundle basicResource) {
