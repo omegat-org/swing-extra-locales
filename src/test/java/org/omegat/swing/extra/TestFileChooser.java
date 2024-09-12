@@ -18,7 +18,7 @@ public class TestFileChooser extends AssertJSwingJUnitTestCase {
 
     @Override
     protected void onSetUp() {
-        Locales.initialize(new Locale("ru"));
+        ExtraLocales.initialize(new Locale("ru"));
         parent = GuiActionRunner.execute(() -> {
             JFrame frame = new JFrame();
             frame.setPreferredSize(new Dimension(800, 600));

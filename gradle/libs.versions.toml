@@ -1,11 +1,11 @@
 [versions]
-mnemonics = "1.2-SNAPSHOT"
-assertj_swing_junit = "3.17.1"
-junit = "4.13.1"
+mnemonics = "1.2"
+assertj_swing_junit = "4.0.0-beta-1"
+junit = "4.13.2"
 
 [libraries]
 mnemonics = {group = "org.omegat", name = "lib-mnemonics", version.ref = "mnemonics"}
-assertj-swing-junit = {group = "org.assertj", name = "assertj-swing-junit", version.ref = "assertj_swing_junit"}
+assertj-swing-junit = {group = "tokyo.northside", name = "assertj-swing-junit", version.ref = "assertj_swing_junit"}
 junit = {group = "junit", name = "junit", version.ref = "junit"}
 
 [plugins]

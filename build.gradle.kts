@@ -35,10 +35,6 @@ if (dotgit.exists()) {
 
 repositories {
     mavenCentral()
-    mavenLocal()
-    // Sonatype OSSRH snapshots
-    maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots")}
-    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots")}
 }
 
 dependencies {
@@ -75,8 +71,8 @@ publishing {
                 url.set("https://codeberg.org/miurahr/java-swing-extra-locales")
                 licenses {
                     license {
-                        name.set("The GNU General Public License, Version 3")
-                        url.set("https://www.gnu.org/licenses/licenses/gpl-3.html")
+                        name.set("The GNU General Public License, Version 2 with the Classpath Exception")
+                        url.set("https://openjdk.org/legal/gplv2+ce.html")
                         distribution.set("repo")
                     }
                 }

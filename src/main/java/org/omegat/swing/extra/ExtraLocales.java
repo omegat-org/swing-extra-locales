@@ -8,8 +8,9 @@ import org.openide.awt.Mnemonics;
 /**
  * @author Hiroshi Miura
  */
-public final class Locales {
-    private static final String BUNDLE = "org/omegat/swing/extra/basic";
+public final class ExtraLocales {
+    private static final String EXTRA_BASIC = "org/omegat/swing/extra/basic";
+    private static final String EXTRA_GTK = "org/omegat/swing/extra/gtk";
     // JRE supports {"zh_CN", "zh_TW", "en", "de", "fr", "it", "es", "pt_BR", "ko", "ja", "sv"};
     private static Boolean initialized = false;
     private static final Locale locale;
@@ -19,7 +20,7 @@ public final class Locales {
         locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country"));
     }
 
-    private Locales() {}
+    private ExtraLocales() {}
 
     @SuppressWarnings("unused")
     public static void initialize() {
@@ -32,8 +33,8 @@ public final class Locales {
             }
             for (String s : supported) {
                 if (locale.equals(new Locale(s))) {
-                    ResourceBundle basicResource = ResourceBundle.getBundle(BUNDLE);
-                    loadLocalizeOverrides(basicResource);
+                    initialize(locale);
+                    break;
                 }
             }
             initialized = true;
@@ -41,12 +42,14 @@ public final class Locales {
     }
 
     /**
-     * Initializer for test.
+     * Initializer.
      * @param locale locale for test (russian).
      */
     static void initialize(Locale locale) {
-        ResourceBundle basicResource = ResourceBundle.getBundle(BUNDLE, locale);
+        ResourceBundle basicResource = ResourceBundle.getBundle(EXTRA_BASIC, locale);
         loadLocalizeOverrides(basicResource);
+        ResourceBundle gtkResource = ResourceBundle.getBundle(EXTRA_GTK);
+        loadLocalizeOverrides(gtkResource);
     }
 
     private static void loadLocalizeOverrides(ResourceBundle basicResource) {

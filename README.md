@@ -24,6 +24,8 @@ origin: https://www.oracle.com/java/technologies/javase/java9locales.html#transl
 
 ## Supported extra locales
 
+Currently, there is only Russian supported.
+
 | Language | Locale ID |
 |----------|-----------|
 | Russian  | ru        |
@@ -31,19 +33,19 @@ origin: https://www.oracle.com/java/technologies/javase/java9locales.html#transl
 
 ## How to use
 
-Call `Locales.initialize()` once before starting GUI parts.
+Call `org.omegat.swing.extra.ExtraLocales.initialize()` once before starting GUI parts.
 It automatically detects a system locale from "user.language" system properties.
 When the locale is supported by the library, the library load translations into Java runtime
 through `javax.swing.UIManager`.
 
-## How to add translations for other languages
+## How to contribute translations
 
-1. add basic_xx.properties bundle
-2. Update `Locales.supported` constant array.
+1. Add or update basic_xx.properties and gtk_xx.properties bundle file under src/main/resources/org/omegat/swing/extra
+2. Update the `ExtraLocales.supported` constant array.
 
 ## License and copyright
 
-This library is distributed under GPL-3 license.
+This library is distributed under GPL-2 license with Class Path exception.
 Some parts of the project are deliverables of `org.omegat:lib-mnemonics` and `netbeans` project.
 
 Russian Translation copyright 2004-2005 Maxym Mykhalcuk
