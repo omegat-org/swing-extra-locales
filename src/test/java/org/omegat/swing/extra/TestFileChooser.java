@@ -1,6 +1,7 @@
 package org.omegat.swing.extra;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.awt.*;
 import java.util.Locale;
@@ -25,6 +26,7 @@ public class TestFileChooser extends AssertJSwingJUnitTestCase {
             fc = new JFileChooser();
             return frame;
         });
+        assertNotNull(parent);
         window = new FrameFixture(robot(), parent);
         window.show();
     }
