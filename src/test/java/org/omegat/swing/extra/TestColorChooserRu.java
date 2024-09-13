@@ -47,8 +47,23 @@ public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
         window.dialog().button((new JButtonTextMatcher("Отмена"))).requireEnabled();
         //
         window.dialog().tabbedPane().requireTabTitles(titles);
+        // select HSV
         window.dialog().tabbedPane().selectTab(titles[1]);
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("Hue"));
         window.dialog().toggleButton(new JToggleButtonTextMatcher("Сатурация"));
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("ценность"));
+        // select HSL
+        window.dialog().tabbedPane().selectTab(titles[2]);
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("Hue"));
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("Легкость"));
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("Сатурация"));
+        window.dialog().label(new JLabelTextMatcher("Прозрачность"));
+        // select RGB
+        window.dialog().tabbedPane().selectTab(titles[3]);
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("Красный"));
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("Голубой"));
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("Зелёный"));
+        window.dialog().label(new JLabelTextMatcher("Alpha"));
     }
 
     private static class JButtonTextMatcher extends GenericTypeMatcher<JButton> {
@@ -75,6 +90,19 @@ public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
         @Override
         protected boolean isMatching(JToggleButton jToggleButton) {
             return jToggleButton.getText().equals(text) && jToggleButton.isShowing();
+        }
+    }
+
+    private static class JLabelTextMatcher extends GenericTypeMatcher<JLabel> {
+        private final String text;
+        public JLabelTextMatcher(String text) {
+            super(JLabel.class);
+            this.text = text;
+        }
+
+        @Override
+        protected boolean isMatching(JLabel label) {
+            return text.equals(label.getText()) && label.isShowing();
         }
     }
 }
