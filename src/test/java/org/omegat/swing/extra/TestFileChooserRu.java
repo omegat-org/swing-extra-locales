@@ -9,6 +9,7 @@ import javax.swing.*;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.junit.Assume;
 import org.junit.Test;
 
 public class TestFileChooserRu extends AssertJSwingJUnitTestCase {
@@ -19,7 +20,8 @@ public class TestFileChooserRu extends AssertJSwingJUnitTestCase {
 
     @Override
     protected void onSetUp() {
-        ExtraLocales.initialize(new Locale("ru"));
+        Assume.assumeTrue(Locale.getDefault().getLanguage().equals("ru"));
+        ExtraLocales.initialize();
         parent = GuiActionRunner.execute(() -> {
             JFrame frame = new JFrame();
             frame.setPreferredSize(new Dimension(800, 600));

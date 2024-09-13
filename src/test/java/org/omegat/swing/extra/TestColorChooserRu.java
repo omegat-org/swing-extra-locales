@@ -9,21 +9,21 @@ import javax.swing.*;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.junit.Assume;
 import org.junit.Test;
 
 public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
 
     protected FrameFixture window;
     protected JFrame parent;
-    final Locale locale = new Locale("ru");
 
     @Override
     protected void onSetUp() {
-        ExtraLocales.initialize(locale);
+        Assume.assumeTrue(Locale.getDefault().getLanguage().equals("ru"));
+        ExtraLocales.initialize();
         parent = GuiActionRunner.execute(() -> {
             JFrame frame = new JFrame();
             frame.setPreferredSize(new Dimension(800, 600));
-            frame.setLocale(locale);
             return frame;
         });
         assertNotNull(parent);
@@ -40,7 +40,7 @@ public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
         window.dialog().requireVisible();
         window.dialog().requireModal();
         assertEquals("Color", window.dialog().target().getTitle());
-        assertEquals(locale.getLanguage(), window.dialog().target().getLocale().getLanguage());
+        assertEquals("ru", window.dialog().target().getLocale().getLanguage());
         window.dialog().tabbedPane().requireTabTitles(titles);
     }
 }

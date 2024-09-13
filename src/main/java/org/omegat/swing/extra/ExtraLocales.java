@@ -25,14 +25,10 @@ public final class ExtraLocales {
     private static final String EXTRA_METAL = "org/omegat/swing/extra/metal";
 
     // JRE supports {"zh_CN", "zh_TW", "en", "de", "fr", "it", "es", "pt_BR", "ko", "ja", "sv"};
-    private static final Locale locale;
+    private static Locale locale;
     private static final String[] supported = {"ru"};
 
     private static Boolean initialized = false;
-
-    static {
-        locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country"));
-    }
 
     private ExtraLocales() {}
 
@@ -41,13 +37,14 @@ public final class ExtraLocales {
         if (initialized) {
             return;
         }
-        synchronized (locale) {
+        synchronized (supported) {
             if (initialized) {
                 return;
             }
+            final String lang = System.getProperty("user.language");
             for (String s : supported) {
-                if (locale.equals(new Locale(s))) {
-                    initialize(locale);
+                if (s.equals(lang)) {
+                    initialize(new Locale(s, System.getProperty("user.country")));
                     break;
                 }
             }
@@ -58,9 +55,10 @@ public final class ExtraLocales {
 
     /**
      * Initializer with locale.
-     * @param locale locale for test.
+     * @param newLocale locale for test.
      */
-    static void initialize(Locale locale) {
+    static void initialize(Locale newLocale) {
+        locale = newLocale;
         loadLocalizeOverrides(EXTRA_BASIC, locale);
 
         // Laf specific initialization.
