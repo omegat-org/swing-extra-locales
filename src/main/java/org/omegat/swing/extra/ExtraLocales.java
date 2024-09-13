@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.synth.SynthLookAndFeel;
-
 import org.openide.awt.Mnemonics;
 
 /**
@@ -52,47 +51,40 @@ public final class ExtraLocales {
                     break;
                 }
             }
+            // got default or unsupported locale
             initialized = true;
         }
     }
 
     /**
-     * Initializer.
-     * @param locale locale for test (russian).
+     * Initializer with locale.
+     * @param locale locale for test.
      */
     static void initialize(Locale locale) {
-        ResourceBundle basicResource = ResourceBundle.getBundle(EXTRA_BASIC, locale);
-        loadLocalizeOverrides(basicResource);
-        lafInitialize(locale);
-    }
+        loadLocalizeOverrides(EXTRA_BASIC, locale);
 
-    private static void lafInitialize(Locale locale) {
+        // Laf specific initialization.
         LookAndFeel laf = UIManager.getLookAndFeel();
         String id = laf.getID();
         if (AQUA_LAF.endsWith(id)) {
-            ResourceBundle aquaResource = ResourceBundle.getBundle(EXTRA_AQUA, locale);
-            loadLocalizeOverrides(aquaResource);
+            loadLocalizeOverrides(EXTRA_AQUA, locale);
         } else if (GTK_LAF.equals(id)) {
-            ResourceBundle gtkResource = ResourceBundle.getBundle(EXTRA_GTK, locale);
-            loadLocalizeOverrides(gtkResource);
+            loadLocalizeOverrides(EXTRA_GTK, locale);
         } else if (WINDOWS_LAF.equals(id)) {
-            ResourceBundle windowsResource = ResourceBundle.getBundle(EXTRA_WINDOWS, locale);
-            loadLocalizeOverrides(windowsResource);
+            loadLocalizeOverrides(EXTRA_WINDOWS, locale);
         } else if (MOTIF_LAF.equals(id)) {
-            ResourceBundle motifResource = ResourceBundle.getBundle(EXTRA_MOTIF, locale);
-            loadLocalizeOverrides(motifResource);
+            loadLocalizeOverrides(EXTRA_MOTIF, locale);
         } else if (laf instanceof SynthLookAndFeel) {
-            ResourceBundle bundle = ResourceBundle.getBundle(EXTRA_SYNTH, locale);
-            loadLocalizeOverrides(bundle);
+            loadLocalizeOverrides(EXTRA_SYNTH, locale);
         } else if (laf instanceof MetalLookAndFeel) {
-            ResourceBundle bundle = ResourceBundle.getBundle(EXTRA_METAL, locale);
-            loadLocalizeOverrides(bundle);
+            loadLocalizeOverrides(EXTRA_METAL, locale);
         }
     }
 
-    private static void loadLocalizeOverrides(ResourceBundle basicResource) {
-        for (String key : basicResource.keySet()) {
-            String val = basicResource.getString(key);
+    private static void loadLocalizeOverrides(String bundleName, Locale locale) {
+        ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
+        for (String key : bundle.keySet()) {
+            String val = bundle.getString(key);
             if (!val.isEmpty()) {
                 if (key.endsWith(".textAndMnemonic")) {
                     processMnemonics(key, val);
@@ -115,6 +107,9 @@ public final class ExtraLocales {
         if (n < 0) {
             // no mnemonic config
             UIManager.put(prefix + postfixes[i][0], val);
+            // reset mnemonic
+            UIManager.put(prefix + postfixes[i][1], "");
+            UIManager.put(prefix + postfixes[i][2], -1);
         } else {
             UIManager.put(prefix + postfixes[i][0], val.substring(0, n) + val.substring(n + 1));
             int ch = getMnemonicChr(val.charAt(n));
