@@ -101,7 +101,7 @@ public final class ExtraLocales {
     };
 
     private static void processMnemonics(String key, String val) {
-        String prefix = key.substring(0, key.length() - ".textAndMnemonic".length() - 1);
+        String prefix = key.substring(0, key.length() - ".textAndMnemonic".length());
         int i = prefix.lastIndexOf('.') < 0 ? 0 : 1;
         int n = Mnemonics.findMnemonicAmpersand(val);
         if (n < 0) {

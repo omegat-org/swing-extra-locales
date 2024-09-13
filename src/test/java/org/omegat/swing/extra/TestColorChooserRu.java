@@ -15,13 +15,15 @@ public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
 
     protected FrameFixture window;
     protected JFrame parent;
+    final Locale locale = new Locale("ru");
 
     @Override
     protected void onSetUp() {
-        ExtraLocales.initialize(new Locale("ru"));
+        ExtraLocales.initialize(locale);
         parent = GuiActionRunner.execute(() -> {
             JFrame frame = new JFrame();
             frame.setPreferredSize(new Dimension(800, 600));
+            frame.setLocale(locale);
             return frame;
         });
         assertNotNull(parent);
@@ -32,10 +34,13 @@ public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
     @Test
     public void testColorChooserDialog() {
         String[] titles = {"Образцы" /* Samples */, "HSV", "HSL", "RGB", "CMYK"};
+        String rgbText = UIManager.getString("ColorChooser.rgbText");
+        assertEquals("RGB", rgbText);
         SwingUtilities.invokeLater(() -> JColorChooser.showDialog(parent, "Color", Color.RED));
         window.dialog().requireVisible();
         window.dialog().requireModal();
         assertEquals("Color", window.dialog().target().getTitle());
+        assertEquals(locale, window.dialog().target().getLocale());
         window.dialog().tabbedPane().requireTabTitles(titles);
     }
 }
