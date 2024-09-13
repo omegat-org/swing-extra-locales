@@ -63,7 +63,14 @@ public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
         window.dialog().toggleButton(new JToggleButtonTextMatcher("Красный"));
         window.dialog().toggleButton(new JToggleButtonTextMatcher("Голубой"));
         window.dialog().toggleButton(new JToggleButtonTextMatcher("Зелёный"));
-        window.dialog().label(new JLabelTextMatcher("Alpha"));
+        window.dialog().label(new JLabelTextMatcher("Альфа"));
+        // select CMYK
+        window.dialog().tabbedPane().selectTab(titles[4]);
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("циан"));
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("Магнит"));
+        window.dialog().toggleButton(new JToggleButtonTextMatcher("Желтый"));
+        window.dialog().label(new JLabelTextMatcher("Черный"));
+        window.dialog().label(new JLabelTextMatcher("Альфа"));
     }
 
     private static class JButtonTextMatcher extends GenericTypeMatcher<JButton> {
