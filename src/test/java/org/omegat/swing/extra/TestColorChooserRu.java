@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
-
 import org.assertj.swing.core.GenericTypeMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -75,6 +74,7 @@ public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
 
     private static class JButtonTextMatcher extends GenericTypeMatcher<JButton> {
         private final String text;
+
         public JButtonTextMatcher(String text) {
             super(JButton.class);
             this.text = text;
@@ -89,6 +89,7 @@ public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
 
     private static class JToggleButtonTextMatcher extends GenericTypeMatcher<JToggleButton> {
         private final String text;
+
         public JToggleButtonTextMatcher(String text) {
             super(JToggleButton.class);
             this.text = text;
@@ -102,6 +103,7 @@ public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
 
     private static class JLabelTextMatcher extends GenericTypeMatcher<JLabel> {
         private final String text;
+
         public JLabelTextMatcher(String text) {
             super(JLabel.class);
             this.text = text;
