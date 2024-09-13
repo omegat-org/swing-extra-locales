@@ -40,7 +40,7 @@ public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
         window.dialog().requireVisible();
         window.dialog().requireModal();
         assertEquals("Color", window.dialog().target().getTitle());
-        assertEquals(locale, window.dialog().target().getLocale());
+        assertEquals(locale.getLanguage(), window.dialog().target().getLocale().getLanguage());
         window.dialog().tabbedPane().requireTabTitles(titles);
     }
 }

@@ -121,6 +121,11 @@ tasks.withType<Javadoc>() {
     }
 }
 
+tasks.withType<Test> {
+    systemProperty("user.language", "ru")
+    systemProperty("user.country", "RU")
+}
+
 nexusPublishing.repositories {
     sonatype()
 }
