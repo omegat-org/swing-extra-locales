@@ -11,7 +11,7 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 
-public class TestColorChooser extends AssertJSwingJUnitTestCase {
+public class TestColorChooserRu extends AssertJSwingJUnitTestCase {
 
     protected FrameFixture window;
     protected JFrame parent;

@@ -12,7 +12,7 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 
-public class TestOptionPane extends AssertJSwingJUnitTestCase {
+public class TestOptionPaneRu extends AssertJSwingJUnitTestCase {
 
     protected FrameFixture window;
     protected JFrame parent;

@@ -11,7 +11,7 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 
-public class TestFileChooser extends AssertJSwingJUnitTestCase {
+public class TestFileChooserRu extends AssertJSwingJUnitTestCase {
 
     protected FrameFixture window;
     protected JFrame parent;
