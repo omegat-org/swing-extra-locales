@@ -121,9 +121,14 @@ tasks.withType<Javadoc>() {
     }
 }
 
-tasks.withType<Test> {
+tasks.register<Test>("testUk") {
+    systemProperty("user.language", "uk")
+    systemProperty("user.country", "UK")
+}
+tasks.getByName<Test>("test") {
     systemProperty("user.language", "ru")
     systemProperty("user.country", "RU")
+    dependsOn(tasks.get("testUk"))
 }
 
 nexusPublishing.repositories {
