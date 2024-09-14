@@ -1,11 +1,12 @@
 package org.omegat.swing.extra;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+import org.openide.awt.Mnemonics;
+
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.synth.SynthLookAndFeel;
-import org.openide.awt.Mnemonics;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * @author Hiroshi Miura
@@ -71,14 +72,18 @@ public final class ExtraLocales {
         } else if (WINDOWS_LAF.equals(id)) {
             loadLocalizeOverrides(EXTRA_WINDOWS, locale);
         } else if (MOTIF_LAF.equals(id)) {
-            loadLocalizeOverrides(EXTRA_MOTIF, locale);
+            nop(EXTRA_MOTIF, locale);
         } else if (laf instanceof SynthLookAndFeel) {
-            loadLocalizeOverrides(EXTRA_SYNTH, locale);
+            nop(EXTRA_SYNTH, locale);
         } else if (laf instanceof MetalLookAndFeel) {
-            loadLocalizeOverrides(EXTRA_METAL, locale);
+            nop(EXTRA_METAL, locale);
         }
     }
 
+    // When we don't have translations.
+    private static void nop(String bundleName, Locale locale) {}
+
+    // override by localized texts.
     private static void loadLocalizeOverrides(String bundleName, Locale locale) {
         ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
         for (String key : bundle.keySet()) {
