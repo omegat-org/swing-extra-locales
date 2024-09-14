@@ -24,12 +24,16 @@ origin: https://www.oracle.com/java/technologies/javase/java9locales.html#transl
 
 ## Supported extra locales
 
-Currently, there is only Russian supported.
+The library supports the following languages;
 
 | Language | Locale ID |
 |----------|-----------|
+| Arabic   | ar        |
+| Catalan  | ca        |
 | Russian  | ru        |
+| Ukrainian| uk        |
 
+You are welcome to contribute the localization.
 
 ## How to use
 

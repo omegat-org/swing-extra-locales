@@ -31,7 +31,7 @@ public final class ExtraLocales {
 
     // Supported extra languages.
     // FYI: JRE supports {"zh_CN", "zh_TW", "en", "de", "fr", "it", "es", "pt_BR", "ko", "ja", "sv"};
-    static final String[] SUPPORTED = {"ar", "ca", "da", "ru", "uk"};
+    static final String[] SUPPORTED = {"ar", "ca", "ru", "uk"};
 
     /**
      * We don't allow instantiates the utility class.
