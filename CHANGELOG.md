@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [v0.2.0]
+
 - Support Arabic, Catalan, and Ukrainian
 - Add basic translation for Danish
 - Support localization of linux, macOS and Windows specific labels.
@@ -14,8 +16,9 @@ All notable changes to this project will be documented in this file.
 - Change license as same as OpenJDK
 - Add tests
 
-## [v0.1.0]
+## v0.1.0
 
 * First release
 
-[Unreleased]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.1.0...HEAD
+[Unreleased]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.2.0...HEAD
+[v0.2.0]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.1.0...v0.2.0

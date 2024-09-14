@@ -35,6 +35,10 @@ The library supports the following languages;
 
 You are welcome to contribute the localization.
 
+## Development status
+
+The library is currently under active development, it is considered as a BETA state.
+
 ## How to use
 
 Call `org.omegat.swing.extra.ExtraLocales.initialize()` once before starting GUI parts.
