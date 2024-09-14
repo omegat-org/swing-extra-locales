@@ -126,7 +126,9 @@ public final class ExtraLocales {
             String val = bundle.getString(key);
             if (!val.isEmpty()) {
                 if (key.endsWith(".textAndMnemonic")) {
-                    processMnemonics(key, val, locale);
+                    processTextMnemonics(key, val, locale);
+                } else if (key.endsWith(".titleAndMnemonic")) {
+                    processTitleMnemonics(key, val, locale);
                 } else {
                     UIManager.put(key, val);
                 }
@@ -134,31 +136,49 @@ public final class ExtraLocales {
         }
     }
 
-    private static final String[][] postfixes = {
+    private static final String[][] titlePostfixes = {
+        {"Title", "NameTitle", "Mnemonic", "MnemonicIndex", "DisplayedMnemonicIndex"}
+    };
+
+    private static void processTitleMnemonics(String key, String val, Locale locale) {
+        String prefix = key.substring(0, key.length() - ".titleAndMnemonic".length());
+        int n = Mnemonics.findMnemonicAmpersand(val);
+        if (n < 0) {
+            // no mnemonic config
+            UIManager.put(prefix + titlePostfixes[0][0], val);
+            UIManager.put(prefix + textPostfixes[0][1], val);
+            // reset mnemonic
+            UIManager.put(prefix + textPostfixes[0][2], "");
+            UIManager.put(prefix + textPostfixes[0][3], -1);
+            UIManager.put(prefix + textPostfixes[0][4], -1);
+        }
+    }
+
+    private static final String[][] textPostfixes = {
         {".text", ".nameText", ".mnemonic", ".mnemonicIndex", ".displayedMnemonicIndex"},
         {"Text", "NameText", "Mnemonic", "MnemonicIndex", "DisplayedMnemonicIndex"}
     };
 
-    private static void processMnemonics(String key, String val, Locale locale) {
+    private static void processTextMnemonics(String key, String val, Locale locale) {
         String prefix = key.substring(0, key.length() - ".textAndMnemonic".length());
         int i = prefix.lastIndexOf('.') < 0 ? 0 : 1;
         int n = Mnemonics.findMnemonicAmpersand(val);
         if (n < 0) {
             // no mnemonic config
-            UIManager.put(prefix + postfixes[i][0], val);
-            UIManager.put(prefix + postfixes[i][1], val);
+            UIManager.put(prefix + textPostfixes[i][0], val);
+            UIManager.put(prefix + textPostfixes[i][1], val);
             // reset mnemonic
-            UIManager.put(prefix + postfixes[i][2], "");
-            UIManager.put(prefix + postfixes[i][3], -1);
-            UIManager.put(prefix + postfixes[i][4], -1);
+            UIManager.put(prefix + textPostfixes[i][2], "");
+            UIManager.put(prefix + textPostfixes[i][3], -1);
+            UIManager.put(prefix + textPostfixes[i][4], -1);
         } else {
-            UIManager.put(prefix + postfixes[i][0], val.substring(0, n) + val.substring(n + 1));
-            UIManager.put(prefix + postfixes[i][1], val.substring(0, n) + val.substring(n + 1));
+            UIManager.put(prefix + textPostfixes[i][0], val.substring(0, n) + val.substring(n + 1));
+            UIManager.put(prefix + textPostfixes[i][1], val.substring(0, n) + val.substring(n + 1));
             int ch = getMnemonicChr(val.charAt(n), locale);
             if (ch > 0) {
-                UIManager.put(prefix + postfixes[i][2], Integer.toString(ch, 10));
-                UIManager.put(prefix + postfixes[i][3], n);
-                UIManager.put(prefix + postfixes[i][4], n);
+                UIManager.put(prefix + textPostfixes[i][2], Integer.toString(ch, 10));
+                UIManager.put(prefix + textPostfixes[i][3], n);
+                UIManager.put(prefix + textPostfixes[i][4], n);
             }
         }
     }

@@ -24,8 +24,8 @@ public class TestOptionPane extends AssertJSwingJUnitTestCase {
     protected JFrame parent;
 
     // expectations
-    private String language;
     private String[] buttonLabels;
+    private String[] titles;
 
     @Override
     protected void onSetUp() {
@@ -38,6 +38,11 @@ public class TestOptionPane extends AssertJSwingJUnitTestCase {
                 "OptionPane.okButton.textAndMnemonic",
                 "OptionPane.cancelButton.textAndMnemonic"
         );
+        titles = buildExpectations(bundle,
+                "OptionPane.title.textAndMnemonic",
+                "OptionPane.inputDialog.titleAndMnemonic",
+                "OptionPane.messageDialog.titleAndMnemonic"
+                );
         ExtraLocales.initialize();
         parent = GuiActionRunner.execute(() -> {
             JFrame frame = new JFrame();
@@ -54,7 +59,7 @@ public class TestOptionPane extends AssertJSwingJUnitTestCase {
         SwingUtilities.invokeLater(() -> JOptionPane.showConfirmDialog(parent, "Confirm"));
         window.dialog().requireVisible();
         window.dialog().requireModal();
-        assertEquals("Выберите опцию", window.dialog().target().getTitle());
+        assertEquals(titles[0], window.dialog().target().getTitle());
         window.dialog().button(new JButtonMatcher(0)).requireText(buttonLabels[0]);
         window.dialog().button(new JButtonMatcher(1)).requireText(buttonLabels[1]);
         window.dialog().button(new JButtonMatcher(2)).requireText(buttonLabels[3]);
@@ -67,7 +72,7 @@ public class TestOptionPane extends AssertJSwingJUnitTestCase {
         SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(parent, "Message"));
         window.dialog().requireVisible();
         window.dialog().requireModal();
-        assertEquals("Сообщение", window.dialog().target().getTitle());
+        assertEquals(titles[2], window.dialog().target().getTitle());
         window.dialog().button(new JButtonMatcher(0)).requireText(buttonLabels[2]);
         window.dialog().label("OptionPane.label").requireText("Message");
         window.dialog().button(new JButtonMatcher(0)).click();
@@ -78,7 +83,7 @@ public class TestOptionPane extends AssertJSwingJUnitTestCase {
         SwingUtilities.invokeLater(() -> JOptionPane.showInputDialog(parent, "Message"));
         window.dialog().requireVisible();
         window.dialog().requireModal();
-        assertEquals("ввод", window.dialog().target().getTitle());
+        assertEquals(titles[1], window.dialog().target().getTitle());
         window.dialog().button(new JButtonMatcher(0)).requireText(buttonLabels[2]);
         window.dialog().button(new JButtonMatcher(1)).requireText(buttonLabels[3]);
         window.dialog().label("OptionPane.label").requireText("Message");
