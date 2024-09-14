@@ -146,8 +146,12 @@ tasks.check {
     dependsOn("testAr", "testCa", "testRu", "testUk")
 }
 
-nexusPublishing.repositories {
-    sonatype()
+nexusPublishing.repositories.sonatype {
+    val sonatypeUsername: String? by project
+    val sonatypePassword: String? by project
+    nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+    username.set(sonatypeUsername)
+    password.set(sonatypePassword)
 }
 
 tasks.withType<Copy> {
