@@ -68,7 +68,7 @@ publishing {
             pom {
                 name.set("swing-extra-locales")
                 description.set("Extra locales for Java Standard UI components")
-                url.set("https://codeberg.org/miurahr/java-swing-extra-locales")
+                url.set("https://github.com/omegat-org/swing-extra-locales")
                 licenses {
                     license {
                         name.set("The GNU General Public License, Version 2 with the Classpath Exception")
@@ -84,9 +84,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:git://codeberg.org/miurahr/java-swing-extra-locales.git")
-                    developerConnection.set("scm:git:git://codeberg.org/miurahr/java-swing-extra-locales.git")
-                    url.set("https://codeberg.org/miurahr/java-swing-extra-locales")
+                    connection.set("scm:git:git://github.com/omegat-org/swing-extra-locales.git")
+                    developerConnection.set("scm:git:git://github.com/omegat-org/swing-extra-locales.git")
+                    url.set("https://github.com/omegat-org/swing-extra-locales")
                 }
             }
         }
