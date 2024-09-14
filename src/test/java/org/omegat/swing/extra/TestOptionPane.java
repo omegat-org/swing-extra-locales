@@ -32,17 +32,17 @@ public class TestOptionPane extends AssertJSwingJUnitTestCase {
         Assume.assumeTrue(Arrays.stream(SUPPORTED)
                 .anyMatch(s -> Locale.getDefault().getLanguage().equals(s)));
         ResourceBundle bundle = ResourceBundle.getBundle(EXTRA_BASIC);
-        buttonLabels = buildExpectations(bundle,
+        buttonLabels = buildExpectations(
+                bundle,
                 "OptionPane.yesButton.textAndMnemonic",
                 "OptionPane.noButton.textAndMnemonic",
                 "OptionPane.okButton.textAndMnemonic",
-                "OptionPane.cancelButton.textAndMnemonic"
-        );
-        titles = buildExpectations(bundle,
+                "OptionPane.cancelButton.textAndMnemonic");
+        titles = buildExpectations(
+                bundle,
                 "OptionPane.title.textAndMnemonic",
                 "OptionPane.inputDialog.titleAndMnemonic",
-                "OptionPane.messageDialog.titleAndMnemonic"
-                );
+                "OptionPane.messageDialog.titleAndMnemonic");
         ExtraLocales.initialize();
         parent = GuiActionRunner.execute(() -> {
             JFrame frame = new JFrame();
