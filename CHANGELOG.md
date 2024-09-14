@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [v0.2.2]
+
+- Fix publish configuration
+
 ## [v0.2.1]
 
 - Update develocity configuration
@@ -25,6 +29,7 @@ All notable changes to this project will be documented in this file.
 
 * First release
 
-[Unreleased]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.2.1...HEAD
+[Unreleased]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.2.2...HEAD
+[v0.2.2]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.2.1...v0.2.2
 [v0.2.1]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.2.0...v0.2.1
 [v0.2.0]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.1.0...v0.2.0
