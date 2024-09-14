@@ -121,14 +121,29 @@ tasks.withType<Javadoc>() {
     }
 }
 
+tasks.register<Test>("testAr") {
+    systemProperty("user.language", "ar")
+    systemProperty("user.country", "SA")
+    group = "verification"
+}
+tasks.register<Test>("testCa") {
+    systemProperty("user.language", "ca")
+    systemProperty("user.country", "ES")
+    group = "verification"
+}
+tasks.register<Test>("testRu") {
+    systemProperty("user.language", "ru")
+    systemProperty("user.country", "RU")
+    group = "verification"
+}
 tasks.register<Test>("testUk") {
     systemProperty("user.language", "uk")
     systemProperty("user.country", "UK")
+    group = "verification"
 }
-tasks.getByName<Test>("test") {
-    systemProperty("user.language", "ru")
-    systemProperty("user.country", "RU")
-    dependsOn(tasks.get("testUk"))
+
+tasks.check {
+    dependsOn("testAr", "testCa", "testRu", "testUk")
 }
 
 nexusPublishing.repositories {

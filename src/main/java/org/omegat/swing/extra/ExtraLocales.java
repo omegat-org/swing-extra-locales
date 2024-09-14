@@ -31,7 +31,7 @@ public final class ExtraLocales {
 
     // Supported extra languages.
     // FYI: JRE supports {"zh_CN", "zh_TW", "en", "de", "fr", "it", "es", "pt_BR", "ko", "ja", "sv"};
-    static final String[] supported = {"ar", "ca", "da", "ru", "uk"};
+    static final String[] SUPPORTED = {"ar", "ca", "da", "ru", "uk"};
 
     /**
      * We don't allow instantiates the utility class.
@@ -71,12 +71,12 @@ public final class ExtraLocales {
         if (initialized) {
             return;
         }
-        synchronized (supported) {
+        synchronized (SUPPORTED) {
             if (initialized) {
                 return;
             }
             final String lang = System.getProperty("user.language");
-            for (String s : supported) {
+            for (String s : SUPPORTED) {
                 if (s.equals(lang)) {
                     initialize(new Locale(s, System.getProperty("user.country")));
                     break;
@@ -116,6 +116,7 @@ public final class ExtraLocales {
     }
 
     // When we don't have translations.
+    @SuppressWarnings("unused")
     private static void nop(String bundleName, Locale locale) {}
 
     // override by localized texts.
@@ -134,8 +135,8 @@ public final class ExtraLocales {
     }
 
     private static final String[][] postfixes = {
-        {".nameText", ".mnemonic", ".displayedMnemonicIndex"},
-        {"Text", "Mnemonic", "MnemonicIndex"}
+        {".text", ".nameText", ".mnemonic", ".mnemonicIndex", ".displayedMnemonicIndex"},
+        {"Text", "NameText", "Mnemonic", "MnemonicIndex", "DisplayedMnemonicIndex"}
     };
 
     private static void processMnemonics(String key, String val, Locale locale) {
@@ -145,15 +146,19 @@ public final class ExtraLocales {
         if (n < 0) {
             // no mnemonic config
             UIManager.put(prefix + postfixes[i][0], val);
+            UIManager.put(prefix + postfixes[i][1], val);
             // reset mnemonic
-            UIManager.put(prefix + postfixes[i][1], "");
-            UIManager.put(prefix + postfixes[i][2], -1);
+            UIManager.put(prefix + postfixes[i][2], "");
+            UIManager.put(prefix + postfixes[i][3], -1);
+            UIManager.put(prefix + postfixes[i][4], -1);
         } else {
             UIManager.put(prefix + postfixes[i][0], val.substring(0, n) + val.substring(n + 1));
+            UIManager.put(prefix + postfixes[i][1], val.substring(0, n) + val.substring(n + 1));
             int ch = getMnemonicChr(val.charAt(n), locale);
             if (ch > 0) {
-                UIManager.put(prefix + postfixes[i][1], Integer.toString(ch, 10));
-                UIManager.put(prefix + postfixes[i][2], n);
+                UIManager.put(prefix + postfixes[i][2], Integer.toString(ch, 10));
+                UIManager.put(prefix + postfixes[i][3], n);
+                UIManager.put(prefix + postfixes[i][4], n);
             }
         }
     }

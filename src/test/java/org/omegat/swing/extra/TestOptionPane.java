@@ -2,9 +2,14 @@ package org.omegat.swing.extra;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.omegat.swing.extra.ExtraLocales.EXTRA_BASIC;
+import static org.omegat.swing.extra.ExtraLocales.SUPPORTED;
+import static org.omegat.swing.utils.TestUtils.buildExpectations;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.*;
 import org.assertj.swing.core.GenericTypeMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
@@ -13,14 +18,26 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Assume;
 import org.junit.Test;
 
-public class TestOptionPaneRu extends AssertJSwingJUnitTestCase {
+public class TestOptionPane extends AssertJSwingJUnitTestCase {
 
     protected FrameFixture window;
     protected JFrame parent;
 
+    // expectations
+    private String language;
+    private String[] buttonLabels;
+
     @Override
     protected void onSetUp() {
-        Assume.assumeTrue(Locale.getDefault().getLanguage().equals("ru"));
+        Assume.assumeTrue(Arrays.stream(SUPPORTED)
+                .anyMatch(s -> Locale.getDefault().getLanguage().equals(s)));
+        ResourceBundle bundle = ResourceBundle.getBundle(EXTRA_BASIC);
+        buttonLabels = buildExpectations(bundle,
+                "OptionPane.yesButton.textAndMnemonic",
+                "OptionPane.noButton.textAndMnemonic",
+                "OptionPane.okButton.textAndMnemonic",
+                "OptionPane.cancelButton.textAndMnemonic"
+        );
         ExtraLocales.initialize();
         parent = GuiActionRunner.execute(() -> {
             JFrame frame = new JFrame();
@@ -38,9 +55,9 @@ public class TestOptionPaneRu extends AssertJSwingJUnitTestCase {
         window.dialog().requireVisible();
         window.dialog().requireModal();
         assertEquals("Выберите опцию", window.dialog().target().getTitle());
-        window.dialog().button(new JButtonMatcher(0)).requireText("Да");
-        window.dialog().button(new JButtonMatcher(1)).requireText("Нет");
-        window.dialog().button(new JButtonMatcher(2)).requireText("Отмена");
+        window.dialog().button(new JButtonMatcher(0)).requireText(buttonLabels[0]);
+        window.dialog().button(new JButtonMatcher(1)).requireText(buttonLabels[1]);
+        window.dialog().button(new JButtonMatcher(2)).requireText(buttonLabels[3]);
         window.dialog().label("OptionPane.label").requireText("Confirm");
         window.dialog().button(new JButtonMatcher(0)).click();
     }
@@ -51,7 +68,7 @@ public class TestOptionPaneRu extends AssertJSwingJUnitTestCase {
         window.dialog().requireVisible();
         window.dialog().requireModal();
         assertEquals("Сообщение", window.dialog().target().getTitle());
-        window.dialog().button(new JButtonMatcher(0)).requireText("OK");
+        window.dialog().button(new JButtonMatcher(0)).requireText(buttonLabels[2]);
         window.dialog().label("OptionPane.label").requireText("Message");
         window.dialog().button(new JButtonMatcher(0)).click();
     }
@@ -62,8 +79,8 @@ public class TestOptionPaneRu extends AssertJSwingJUnitTestCase {
         window.dialog().requireVisible();
         window.dialog().requireModal();
         assertEquals("ввод", window.dialog().target().getTitle());
-        window.dialog().button(new JButtonMatcher(0)).requireText("OK");
-        window.dialog().button(new JButtonMatcher(1)).requireText("Отмена");
+        window.dialog().button(new JButtonMatcher(0)).requireText(buttonLabels[2]);
+        window.dialog().button(new JButtonMatcher(1)).requireText(buttonLabels[3]);
         window.dialog().label("OptionPane.label").requireText("Message");
         window.dialog().textBox().enterText("sample");
         window.dialog().button(new JButtonMatcher(0)).click();
