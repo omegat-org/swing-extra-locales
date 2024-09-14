@@ -45,11 +45,10 @@ public final class ExtraLocales {
      * Initialize localized SWING UI messages.
      * <p>
      *     ExtraLocales#initialize loads localized messages
-     *     when the library support the JVM locale.
-     *     It also override messages for LaF specific UI texts
-     *     when the library support it.
-     * </p>
-     * <p>
+     *     when the library supports the JVM locale.
+     *     It also overrides messages for LaF specific UI texts
+     *     when the library supports it.
+     *
      *     The library support the following languages;
      *     <ul>
      *         <li>Arabic</li>
@@ -65,7 +64,6 @@ public final class ExtraLocales {
      *         <li>Gtk (Linux)</li>
      *         <li>Windows (MS Windows)</li>
      *     </ul>
-     * </p>
      */
     public static void initialize() {
         if (initialized) {
