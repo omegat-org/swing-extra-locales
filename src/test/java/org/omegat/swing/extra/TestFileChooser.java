@@ -55,10 +55,6 @@ public class TestFileChooser extends AssertJSwingJUnitTestCase {
         window.show();
     }
 
-    private String getString(ResourceBundle bundle, String key) {
-        return bundle.getString(key).replace("&", "");
-    }
-
     @Test
     public void testFileChooserOpenDialog() {
         SwingUtilities.invokeLater(() -> fc.showOpenDialog(parent));

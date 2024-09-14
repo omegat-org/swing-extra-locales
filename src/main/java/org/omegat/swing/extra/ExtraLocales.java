@@ -128,7 +128,7 @@ public final class ExtraLocales {
                 if (key.endsWith(".textAndMnemonic")) {
                     processTextMnemonics(key, val, locale);
                 } else if (key.endsWith(".titleAndMnemonic")) {
-                    processTitleMnemonics(key, val, locale);
+                    processTitleMnemonics(key, val);
                 } else {
                     UIManager.put(key, val);
                 }
@@ -140,7 +140,7 @@ public final class ExtraLocales {
         {"Title", "NameTitle", "Mnemonic", "MnemonicIndex", "DisplayedMnemonicIndex"}
     };
 
-    private static void processTitleMnemonics(String key, String val, Locale locale) {
+    private static void processTitleMnemonics(String key, String val) {
         String prefix = key.substring(0, key.length() - ".titleAndMnemonic".length());
         int n = Mnemonics.findMnemonicAmpersand(val);
         if (n < 0) {

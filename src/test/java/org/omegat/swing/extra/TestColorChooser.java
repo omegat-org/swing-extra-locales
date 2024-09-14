@@ -91,10 +91,6 @@ public class TestColorChooser extends AssertJSwingJUnitTestCase {
         window.show();
     }
 
-    private String getString(ResourceBundle bundle, String key) {
-        return bundle.getString(key).replace("&", "");
-    }
-
     @Test
     public void testColorChooserDialog() {
         SwingUtilities.invokeLater(() -> JColorChooser.showDialog(parent, "Color", Color.RED));
