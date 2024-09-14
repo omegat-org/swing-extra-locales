@@ -146,12 +146,17 @@ tasks.check {
     dependsOn("testAr", "testCa", "testRu", "testUk")
 }
 
-nexusPublishing.repositories.sonatype {
-    val sonatypeUsername: String? by project
-    val sonatypePassword: String? by project
-    nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-    username.set(sonatypeUsername)
-    password.set(sonatypePassword)
+val ossrhUsername: String? by project
+val ossrhPassword: String? by project
+
+nexusPublishing.repositories {
+    sonatype {
+        stagingProfileId = "15818299f2c2bb"
+        nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+        snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        username.set(ossrhUsername)
+        password.set(ossrhPassword)
+    }
 }
 
 tasks.withType<Copy> {

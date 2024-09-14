@@ -27,3 +27,6 @@ build
 .gradle
 out
 version.properties
+
+work
+tmp
