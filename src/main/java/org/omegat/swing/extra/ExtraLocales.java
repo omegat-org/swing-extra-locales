@@ -26,7 +26,7 @@ public final class ExtraLocales {
 
     // JRE supports {"zh_CN", "zh_TW", "en", "de", "fr", "it", "es", "pt_BR", "ko", "ja", "sv"};
     private static Locale locale;
-    private static final String[] supported = {"ru", "uk"};
+    private static final String[] supported = {"ar", "ca", "da", "ru", "uk"};
 
     private static Boolean initialized = false;
 
