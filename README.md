@@ -55,7 +55,9 @@ through `javax.swing.UIManager`.
 
 This library is distributed under GPL-2 license with Class Path exception.
 Some parts of the project are deliverables of `org.omegat:lib-mnemonics` and `netbeans` project.
+Source resource bundles are copied from OpenJDK project.
 
-Russian Translation copyright 2004-2005 Maxym Mykhalcuk
+Copyright 2004-2005 Maxym Mykhalcuk
+          2024 Hiroshi Miura
+          2024 the OmegaT project
 
-The library copyright 2024 Hiroshi Miura
