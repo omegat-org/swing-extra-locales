@@ -15,6 +15,7 @@ import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestFileChooser extends AssertJSwingJUnitTestCase {
@@ -29,7 +30,7 @@ public class TestFileChooser extends AssertJSwingJUnitTestCase {
     String[] buttonLabels;
 
     @Override
-    protected void onSetUp() {
+    protected void onSetUp() throws Exception {
         language = Locale.getDefault().getLanguage();
         Assume.assumeTrue(Arrays.stream(SUPPORTED).anyMatch(s -> language.equals(s)));
         // expectations
@@ -42,9 +43,8 @@ public class TestFileChooser extends AssertJSwingJUnitTestCase {
                 "FileChooser.openButton.textAndMnemonic",
                 "FileChooser.saveButton.textAndMnemonic");
 
-        //
-        ExtraLocales.initialize();
         parent = GuiActionRunner.execute(() -> {
+            ExtraLocales.initialize();
             JFrame frame = new JFrame();
             frame.setPreferredSize(new Dimension(800, 600));
             fc = new JFileChooser();

@@ -2,10 +2,7 @@ package org.omegat.swing.extra;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.synth.SynthLookAndFeel;
+import javax.swing.*;
 import org.openide.awt.Mnemonics;
 
 /**
@@ -19,10 +16,9 @@ public final class ExtraLocales {
     static final String EXTRA_WINDOWS = "org/omegat/swing/extra/windows";
 
     // LaF IDs.
-    private static final String AQUA_LAF = "Aqua";
-    private static final String GTK_LAF = "GTK";
-    private static final String WINDOWS_LAF = "Windows";
-    private static final String MOTIF_LAF = "Motif";
+    private static final String AQUA_LAF = "AquaLookAndFeel";
+    private static final String GTK_LAF = "GTKLookAndFeel";
+    private static final String WINDOWS_LAF = "WindowsLookAndFeel";
 
     // other bundles.
     private static final String EXTRA_MOTIF = "org/omegat/swing/extra/motif";
@@ -38,9 +34,6 @@ public final class ExtraLocales {
      */
     private ExtraLocales() {}
 
-    // Force run initialization only once.
-    private static Boolean initialized = false;
-
     /**
      * Initialize localized SWING UI messages.
      * <p>
@@ -49,86 +42,71 @@ public final class ExtraLocales {
      *     It also overrides messages for LaF specific UI texts
      *     when the library supports it.
      *
-     *     The library support the following languages;
+     *     The library supports the following languages;
      *     <ul>
      *         <li>Arabic</li>
      *         <li>Catalan</li>
-     *         <li>Dansk</li>
+     *         <li>Danish</li>
      *         <li>Russian</li>
      *         <li>Ukrainian</li>
      *     </ul>
      *
-     *     It support the following Look-and-Feels;
+     *     It supports the following Look-and-Feels;
      *     <ul>
      *         <li>Aqua (macOS)</li>
      *         <li>Gtk (Linux)</li>
      *         <li>Windows (MS Windows)</li>
      *     </ul>
      */
-    public static void initialize() {
-        if (initialized) {
-            return;
-        }
-        synchronized (SUPPORTED) {
-            if (initialized) {
-                return;
+    public static void initialize() throws Exception {
+        LookAndFeel originalLaf = UIManager.getLookAndFeel();
+        UIManager.setLookAndFeel(new ExtraLocalesLookAndFeel(originalLaf));
+    }
+
+    public static UIDefaults setDefaults(UIDefaults uiDefaults) {
+        final String lang = System.getProperty("user.language");
+        for (String s : SUPPORTED) {
+            if (s.equals(lang)) {
+                Locale locale = new Locale(s, System.getProperty("user.country"));
+                return setDefaults(uiDefaults, locale);
             }
-            final String lang = System.getProperty("user.language");
-            for (String s : SUPPORTED) {
-                if (s.equals(lang)) {
-                    initialize(new Locale(s, System.getProperty("user.country")));
-                    break;
-                }
-            }
-            // got default or unsupported locale
-            initialized = true;
         }
+        return uiDefaults;
     }
 
     /**
      * Initializer with locale.
-     * <p>
-     *     It is package-private for test purpose.
      *
      * @param locale to load.
      */
-    static void initialize(Locale locale) {
-        loadLocalizeOverrides(EXTRA_BASIC, locale);
+    private static UIDefaults setDefaults(UIDefaults uiDefaults, Locale locale) {
+        loadLocalizeOverrides(uiDefaults, EXTRA_BASIC, locale);
 
         // Laf specific initialization.
-        LookAndFeel laf = UIManager.getLookAndFeel();
-        String id = laf.getID();
-        if (AQUA_LAF.endsWith(id)) {
-            loadLocalizeOverrides(EXTRA_AQUA, locale);
-        } else if (GTK_LAF.equals(id)) {
-            loadLocalizeOverrides(EXTRA_GTK, locale);
-        } else if (WINDOWS_LAF.equals(id)) {
-            loadLocalizeOverrides(EXTRA_WINDOWS, locale);
-        } else if (MOTIF_LAF.equals(id)) {
-            nop(EXTRA_MOTIF, locale);
-        } else if (laf instanceof SynthLookAndFeel) {
-            nop(EXTRA_SYNTH, locale);
-        } else if (laf instanceof MetalLookAndFeel) {
-            nop(EXTRA_METAL, locale);
+        String clazz = UIManager.getSystemLookAndFeelClassName();
+        if (clazz.endsWith(AQUA_LAF)) {
+            loadLocalizeOverrides(uiDefaults, EXTRA_AQUA, locale);
+        } else if (clazz.endsWith(GTK_LAF)) {
+            loadLocalizeOverrides(uiDefaults, EXTRA_GTK, locale);
+        } else if (clazz.endsWith(WINDOWS_LAF)) {
+            loadLocalizeOverrides(uiDefaults, EXTRA_WINDOWS, locale);
         }
+
+        return uiDefaults;
     }
 
-    // When we don't have translations.
-    @SuppressWarnings("unused")
-    private static void nop(String bundleName, Locale locale) {}
-
     // override by localized texts.
-    private static void loadLocalizeOverrides(String bundleName, Locale locale) {
+    private static void loadLocalizeOverrides(UIDefaults uiDefaults, String bundleName, Locale locale) {
         ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
         for (String key : bundle.keySet()) {
             String val = bundle.getString(key);
             if (!val.isEmpty()) {
                 if (key.endsWith(".textAndMnemonic")) {
-                    processTextMnemonics(key, val, locale);
+                    processTextMnemonics(uiDefaults, key, val, locale);
                 } else if (key.endsWith(".titleAndMnemonic")) {
-                    processTitleMnemonics(key, val);
+                    processTitleMnemonics(uiDefaults, key, val);
                 } else {
-                    UIManager.put(key, val);
+                    uiDefaults.put(key, val);
                 }
             }
         }
@@ -138,17 +116,17 @@ public final class ExtraLocales {
         {"Title", "NameTitle", "Mnemonic", "MnemonicIndex", "DisplayedMnemonicIndex"}
     };
 
-    private static void processTitleMnemonics(String key, String val) {
+    private static void processTitleMnemonics(UIDefaults uiDefaults, String key, String val) {
         String prefix = key.substring(0, key.length() - ".titleAndMnemonic".length());
         int n = Mnemonics.findMnemonicAmpersand(val);
         if (n < 0) {
             // no mnemonic config
-            UIManager.put(prefix + titlePostfixes[0][0], val);
-            UIManager.put(prefix + textPostfixes[0][1], val);
+            uiDefaults.put(prefix + titlePostfixes[0][0], val);
+            uiDefaults.put(prefix + textPostfixes[0][1], val);
             // reset mnemonic
-            UIManager.put(prefix + textPostfixes[0][2], "");
-            UIManager.put(prefix + textPostfixes[0][3], -1);
-            UIManager.put(prefix + textPostfixes[0][4], -1);
+            // uiDefaults.put(prefix + textPostfixes[0][2], "0");
+            // uiDefaults.put(prefix + textPostfixes[0][3], -1);
+            // uiDefaults.put(prefix + textPostfixes[0][4], -1);
         }
     }
 
@@ -157,26 +135,26 @@ public final class ExtraLocales {
         {"Text", "NameText", "Mnemonic", "MnemonicIndex", "DisplayedMnemonicIndex"}
     };
 
-    private static void processTextMnemonics(String key, String val, Locale locale) {
+    private static void processTextMnemonics(UIDefaults uiDefaults, String key, String val, Locale locale) {
         String prefix = key.substring(0, key.length() - ".textAndMnemonic".length());
         int i = prefix.lastIndexOf('.') < 0 ? 0 : 1;
         int n = Mnemonics.findMnemonicAmpersand(val);
         if (n < 0) {
             // no mnemonic config
-            UIManager.put(prefix + textPostfixes[i][0], val);
-            UIManager.put(prefix + textPostfixes[i][1], val);
+            uiDefaults.put(prefix + textPostfixes[i][0], val);
+            uiDefaults.put(prefix + textPostfixes[i][1], val);
             // reset mnemonic
-            UIManager.put(prefix + textPostfixes[i][2], "");
-            UIManager.put(prefix + textPostfixes[i][3], -1);
-            UIManager.put(prefix + textPostfixes[i][4], -1);
+            // uiDefaults.put(prefix + textPostfixes[i][2], "0");
+            // uiDefaults.put(prefix + textPostfixes[i][3], -1);
+            // uiDefaults.put(prefix + textPostfixes[i][4], -1);
         } else {
-            UIManager.put(prefix + textPostfixes[i][0], val.substring(0, n) + val.substring(n + 1));
-            UIManager.put(prefix + textPostfixes[i][1], val.substring(0, n) + val.substring(n + 1));
+            uiDefaults.put(prefix + textPostfixes[i][0], val.substring(0, n) + val.substring(n + 1));
+            uiDefaults.put(prefix + textPostfixes[i][1], val.substring(0, n) + val.substring(n + 1));
             int ch = getMnemonicChr(val.charAt(n), locale);
             if (ch > 0) {
-                UIManager.put(prefix + textPostfixes[i][2], Integer.toString(ch, 10));
-                UIManager.put(prefix + textPostfixes[i][3], n);
-                UIManager.put(prefix + textPostfixes[i][4], n);
+                uiDefaults.put(prefix + textPostfixes[i][2], Integer.toString(ch, 10));
+                uiDefaults.put(prefix + textPostfixes[i][3], n);
+                uiDefaults.put(prefix + textPostfixes[i][4], n);
             }
         }
     }

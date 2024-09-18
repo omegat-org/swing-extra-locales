@@ -16,6 +16,7 @@ import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestOptionPane extends AssertJSwingJUnitTestCase {
@@ -28,7 +29,7 @@ public class TestOptionPane extends AssertJSwingJUnitTestCase {
     private String[] titles;
 
     @Override
-    protected void onSetUp() {
+    public void onSetUp() {
         Assume.assumeTrue(Arrays.stream(SUPPORTED)
                 .anyMatch(s -> Locale.getDefault().getLanguage().equals(s)));
         ResourceBundle bundle = ResourceBundle.getBundle(EXTRA_BASIC);
@@ -43,8 +44,8 @@ public class TestOptionPane extends AssertJSwingJUnitTestCase {
                 "OptionPane.title.textAndMnemonic",
                 "OptionPane.inputDialog.titleAndMnemonic",
                 "OptionPane.messageDialog.titleAndMnemonic");
-        ExtraLocales.initialize();
         parent = GuiActionRunner.execute(() -> {
+            ExtraLocales.initialize();
             JFrame frame = new JFrame();
             frame.setPreferredSize(new Dimension(800, 600));
             return frame;

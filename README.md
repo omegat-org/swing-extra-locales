@@ -41,10 +41,20 @@ The library is currently under active development, it is considered as a BETA st
 
 ## How to use
 
+### Basic application which does not handle LookAndFeel
+
 Call `org.omegat.swing.extra.ExtraLocales.initialize()` once before starting GUI parts.
 It automatically detects a system locale from "user.language" system properties.
 When the locale is supported by the library, the library load translations into Java runtime
 through `javax.swing.UIManager`.
+
+`ExtraLocales.initialize()` register the library own LookAndFeel that wrap
+the application LaF that overrides standard GUI dialogs messages.
+
+### Advanced application that tweak LookAndFeel
+
+Use `org.omegat.swing.extra.ExtraLocales.setDefaults(UIDefaults uiDefauls, String lafId)` function.
+It returns `UIDefaults` object with localized strings overrides.
 
 ## How to contribute translations
 

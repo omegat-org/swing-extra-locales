@@ -11,19 +11,21 @@ import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.swing.JColorChooser;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.omegat.swing.utils.JButtonTextMatcher;
 import org.omegat.swing.utils.JLabelTextMatcher;
 import org.omegat.swing.utils.JToggleButtonTextMatcher;
 
 public class TestColorChooser extends AssertJSwingJUnitTestCase {
+
+    private static final String GTK_LAF = "GTK";
+    private static String lafId;
 
     protected FrameFixture window;
     protected JFrame parent;
@@ -37,8 +39,14 @@ public class TestColorChooser extends AssertJSwingJUnitTestCase {
     private String[] rgbLabels;
     private String[] cmykLabels;
 
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        lafId = UIManager.getLookAndFeel().getID();
+        ExtraLocales.initialize();
+    }
+
     @Override
-    protected void onSetUp() {
+    protected void onSetUp() throws Exception {
         language = Locale.getDefault().getLanguage();
         Assume.assumeTrue(Arrays.stream(SUPPORTED).anyMatch(s -> language.equals(s)));
         ResourceBundle bundle = ResourceBundle.getBundle(EXTRA_BASIC);
@@ -80,7 +88,6 @@ public class TestColorChooser extends AssertJSwingJUnitTestCase {
                 "ColorChooser.cmykBlack.textAndMnemonic",
                 "ColorChooser.cmykAlpha.textAndMnemonic");
         // preparation
-        ExtraLocales.initialize();
         parent = GuiActionRunner.execute(() -> {
             JFrame frame = new JFrame();
             frame.setPreferredSize(new Dimension(800, 600));
@@ -102,31 +109,42 @@ public class TestColorChooser extends AssertJSwingJUnitTestCase {
         window.dialog().button((new JButtonTextMatcher(buttonLabels[0]))).requireEnabled();
         window.dialog().button((new JButtonTextMatcher(buttonLabels[1]))).requireEnabled();
         window.dialog().button((new JButtonTextMatcher(buttonLabels[2]))).requireEnabled();
-        // check tab titles.
-        window.dialog().tabbedPane().requireTabTitles(tabTitles);
-        // select HSV
-        window.dialog().tabbedPane().selectTab(tabTitles[1]);
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(hsvLabels[0]));
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(hsvLabels[1]));
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(hsvLabels[2]));
-        // select HSL
-        window.dialog().tabbedPane().selectTab(tabTitles[2]);
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(hslLabels[0]));
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(hslLabels[1]));
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(hslLabels[2]));
-        window.dialog().label(new JLabelTextMatcher(hslLabels[3]));
-        // select RGB
-        window.dialog().tabbedPane().selectTab(tabTitles[3]);
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(rgbLabels[0]));
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(rgbLabels[1]));
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(rgbLabels[2]));
-        window.dialog().label(new JLabelTextMatcher(rgbLabels[3]));
-        // select CMYK
-        window.dialog().tabbedPane().selectTab(tabTitles[4]);
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(cmykLabels[0]));
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(cmykLabels[1]));
-        window.dialog().toggleButton(new JToggleButtonTextMatcher(cmykLabels[2]));
-        window.dialog().label(new JLabelTextMatcher(cmykLabels[3]));
-        window.dialog().label(new JLabelTextMatcher(cmykLabels[4]));
+
+        if (GTK_LAF.equals(lafId)) {
+            window.dialog().label(new JLabelTextMatcher(hsvLabels[0]));
+            window.dialog().label(new JLabelTextMatcher(hsvLabels[1]));
+            window.dialog().label(new JLabelTextMatcher(hsvLabels[2]));
+            window.dialog().label(new JLabelTextMatcher(rgbLabels[0]));
+            window.dialog().label(new JLabelTextMatcher(rgbLabels[1]));
+            window.dialog().label(new JLabelTextMatcher(rgbLabels[2]));
+            window.dialog().label(new JLabelTextMatcher(rgbLabels[3]));
+        } else {
+            // check tab titles.
+            window.dialog().tabbedPane().requireTabTitles(tabTitles);
+            // select HSV
+            window.dialog().tabbedPane().selectTab(tabTitles[1]);
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(hsvLabels[0]));
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(hsvLabels[1]));
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(hsvLabels[2]));
+            // select HSL
+            window.dialog().tabbedPane().selectTab(tabTitles[2]);
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(hslLabels[0]));
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(hslLabels[1]));
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(hslLabels[2]));
+            window.dialog().label(new JLabelTextMatcher(hslLabels[3]));
+            // select RGB
+            window.dialog().tabbedPane().selectTab(tabTitles[3]);
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(rgbLabels[0]));
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(rgbLabels[1]));
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(rgbLabels[2]));
+            window.dialog().label(new JLabelTextMatcher(rgbLabels[3]));
+            // select CMYK
+            window.dialog().tabbedPane().selectTab(tabTitles[4]);
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(cmykLabels[0]));
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(cmykLabels[1]));
+            window.dialog().toggleButton(new JToggleButtonTextMatcher(cmykLabels[2]));
+            window.dialog().label(new JLabelTextMatcher(cmykLabels[3]));
+            window.dialog().label(new JLabelTextMatcher(cmykLabels[4]));
+        }
     }
 }
