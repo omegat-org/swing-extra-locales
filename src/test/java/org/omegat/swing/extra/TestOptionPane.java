@@ -16,7 +16,6 @@ import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Assume;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestOptionPane extends AssertJSwingJUnitTestCase {

@@ -16,7 +16,6 @@ import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Assume;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.omegat.swing.utils.JButtonTextMatcher;
 import org.omegat.swing.utils.JLabelTextMatcher;
@@ -25,7 +24,7 @@ import org.omegat.swing.utils.JToggleButtonTextMatcher;
 public class TestColorChooser extends AssertJSwingJUnitTestCase {
 
     private static final String GTK_LAF = "GTK";
-    private static String lafId;
+    private String lafId;
 
     protected FrameFixture window;
     protected JFrame parent;
@@ -39,14 +38,9 @@ public class TestColorChooser extends AssertJSwingJUnitTestCase {
     private String[] rgbLabels;
     private String[] cmykLabels;
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        lafId = UIManager.getLookAndFeel().getID();
-        ExtraLocales.initialize();
-    }
-
     @Override
-    protected void onSetUp() throws Exception {
+    protected void onSetUp() {
+        lafId = UIManager.getLookAndFeel().getID();
         language = Locale.getDefault().getLanguage();
         Assume.assumeTrue(Arrays.stream(SUPPORTED).anyMatch(s -> language.equals(s)));
         ResourceBundle bundle = ResourceBundle.getBundle(EXTRA_BASIC);
@@ -89,6 +83,7 @@ public class TestColorChooser extends AssertJSwingJUnitTestCase {
                 "ColorChooser.cmykAlpha.textAndMnemonic");
         // preparation
         parent = GuiActionRunner.execute(() -> {
+            ExtraLocales.initialize();
             JFrame frame = new JFrame();
             frame.setPreferredSize(new Dimension(800, 600));
             return frame;
