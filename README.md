@@ -53,7 +53,7 @@ the application LaF that overrides standard GUI dialogs messages.
 
 ### Advanced application that tweak LookAndFeel
 
-Use `org.omegat.swing.extra.ExtraLocales.setDefaults(UIDefaults uiDefauls, String lafId)` function.
+Use `org.omegat.swing.extra.ExtraLocales.setDefaults(UIDefaults uiDefauls)` function.
 It returns `UIDefaults` object with localized strings overrides.
 
 ## How to contribute translations
