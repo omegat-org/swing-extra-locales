@@ -8,6 +8,7 @@ import org.openide.awt.Mnemonics;
 /**
  * @author Hiroshi Miura
  */
+@SuppressWarnings("unused")
 public final class ExtraLocales {
     // Bundle paths.
     static final String EXTRA_BASIC = "org/omegat/swing/extra/basic";
@@ -63,6 +64,11 @@ public final class ExtraLocales {
         UIManager.setLookAndFeel(new ExtraLocalesLookAndFeel(originalLaf));
     }
 
+    /**
+     * Override UIDefaults dialog title/messages with Localized strings.
+     * @param uiDefaults Application UIDefaults table to be overridden.
+     * @return UIDefaults with L10N messages when the locale is supported.
+     */
     public static UIDefaults setDefaults(UIDefaults uiDefaults) {
         final String lang = System.getProperty("user.language");
         for (String s : SUPPORTED) {
@@ -116,6 +122,12 @@ public final class ExtraLocales {
         {"Title", "NameTitle", "Mnemonic", "MnemonicIndex", "DisplayedMnemonicIndex"}
     };
 
+    private static void removeIfExists(UIDefaults uiDefaults, String key) {
+        if (uiDefaults.get(key) != null) {
+            uiDefaults.remove(key);
+        }
+    }
+
     private static void processTitleMnemonics(UIDefaults uiDefaults, String key, String val) {
         String prefix = key.substring(0, key.length() - ".titleAndMnemonic".length());
         int n = Mnemonics.findMnemonicAmpersand(val);
@@ -124,9 +136,9 @@ public final class ExtraLocales {
             uiDefaults.put(prefix + titlePostfixes[0][0], val);
             uiDefaults.put(prefix + textPostfixes[0][1], val);
             // reset mnemonic
-            // uiDefaults.put(prefix + textPostfixes[0][2], "0");
-            // uiDefaults.put(prefix + textPostfixes[0][3], -1);
-            // uiDefaults.put(prefix + textPostfixes[0][4], -1);
+            removeIfExists(uiDefaults, prefix + textPostfixes[0][2]);
+            removeIfExists(uiDefaults, prefix + textPostfixes[0][3]);
+            removeIfExists(uiDefaults, prefix + textPostfixes[0][4]);
         }
     }
 
@@ -144,9 +156,9 @@ public final class ExtraLocales {
             uiDefaults.put(prefix + textPostfixes[i][0], val);
             uiDefaults.put(prefix + textPostfixes[i][1], val);
             // reset mnemonic
-            // uiDefaults.put(prefix + textPostfixes[i][2], "0");
-            // uiDefaults.put(prefix + textPostfixes[i][3], -1);
-            // uiDefaults.put(prefix + textPostfixes[i][4], -1);
+            removeIfExists(uiDefaults, prefix + textPostfixes[i][2]);
+            removeIfExists(uiDefaults, prefix + textPostfixes[i][3]);
+            removeIfExists(uiDefaults, prefix + textPostfixes[i][4]);
         } else {
             uiDefaults.put(prefix + textPostfixes[i][0], val.substring(0, n) + val.substring(n + 1));
             uiDefaults.put(prefix + textPostfixes[i][1], val.substring(0, n) + val.substring(n + 1));
