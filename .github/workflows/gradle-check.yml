@@ -27,7 +27,7 @@ jobs:
         build-scan-terms-of-service-url: https://gradle.com/terms-of-service
         build-scan-terms-of-service-agree: yes
     - name: Run gradle build
-      run: xvfb-run -a --server-args='-screen 0, 1024x768x24' ./gradlew -PenvIsCi=true check
+      run: xvfb-run -a --server-args='-screen 0, 1024x768x24' ./gradlew -PenvIsCi=true --scan check
       id: gradle
     - name: "Add Build Scan URL as PR comment"
       uses: actions/github-script@v7

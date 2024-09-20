@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    - name: setup xvfb environment
+      run: sudo apt-get install -f -q xvfb libsm-dev libxrender1 libxext-dev libxtst-dev libxcb1-dev fonts-dejavu xfonts-base xfonts-scalable
     - uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
@@ -23,8 +25,9 @@ jobs:
         echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Run gradle build
+      run: xvfb-run -a --server-args='-screen 0, 1024x768x24' ./gradlew -PenvIsCi=true build
+      id: gradle
     - name: Publish package to OSSRH
       run: ./gradlew publishToSonatype
       env:
