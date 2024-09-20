@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [v0.3.0]
+
+- Change API
+- Update test to initialize in EDT context
+- Update GitHub actions
+- Move to GitHub project
+
 ## [v0.2.3]
 
 - fix publish authentication
@@ -34,6 +41,7 @@ All notable changes to this project will be documented in this file.
 
 * First release
 
-[Unreleased]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.2.3...HEAD
-[v0.2.3]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.2.0...v0.2.3
-[v0.2.0]: https://codeberg.org/miurahr/java-swing-extra-locales/compare/v0.1.0...v0.2.0
+[Unreleased]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.3.0...HEAD
+[v0.3.0]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.2.3...v0.3.0
+[v0.2.3]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.2.0...v0.2.3
+[v0.2.0]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.1.0...v0.2.0
