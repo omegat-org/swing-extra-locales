@@ -39,6 +39,23 @@ You are welcome to contribute the localization.
 
 The library is currently under active development, it is considered as a BETA state.
 
+### Translation project
+
+You can reach to the translation project at https://translate.codeberg.org/projects/java-swing-extra-locales/
+It allows you to correct and update translations, and to add further languages to be supported.
+
+Here is a list of calls translators.  
+
+| Language         | Locale ID |
+|------------------|-----------|
+| Afrikaans        | af        |
+| Bahasa Indonesia | id        | 
+| Latovian         | lv        |
+| Lithuanian       | lt        |
+| Mongolian        | mn        |
+| Romanian         | ro        |
+
+
 ## How to use
 
 ### Basic application which does not handle LookAndFeel
