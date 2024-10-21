@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [v0.3.1]
+## [v0.3.2]
 
 - Update Russian and Ukrainian translations (#2)
 - Bump assertj-swing-junit@4.0.0-beta-2 for unit tests
@@ -46,8 +46,8 @@ All notable changes to this project will be documented in this file.
 
 * First release
 
-[Unreleased]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.3.1...HEAD
-[v0.3.1]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.3.0...v0.3.1
+[Unreleased]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.3.2...HEAD
+[v0.3.2]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.3.0...v0.3.2
 [v0.3.0]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.2.3...v0.3.0
 [v0.2.3]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.2.0...v0.2.3
 [v0.2.0]: https://github.com/omegat-org/java-swing-extra-locales/compare/v0.1.0...v0.2.0
