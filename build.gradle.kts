@@ -1,3 +1,4 @@
+import java.io.ByteArrayOutputStream
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -121,30 +122,70 @@ tasks.withType<Javadoc>() {
     }
 }
 
-tasks.register<Test>("testAr") {
-    systemProperty("user.language", "ar")
-    systemProperty("user.country", "SA")
-    group = "verification"
-}
-tasks.register<Test>("testCa") {
-    systemProperty("user.language", "ca")
-    systemProperty("user.country", "ES")
-    group = "verification"
-}
-tasks.register<Test>("testRu") {
-    systemProperty("user.language", "ru")
-    systemProperty("user.country", "RU")
-    group = "verification"
-}
-tasks.register<Test>("testUk") {
-    systemProperty("user.language", "uk")
-    systemProperty("user.country", "UK")
-    group = "verification"
+fun startX(display: String): String {
+    val outputStream = ByteArrayOutputStream()
+    exec {
+        commandLine("sh", "-c", "Xvfb " + display + " -screen 0 1280x1024x24 >>/dev/null 2>&1 & echo $!")
+        standardOutput = outputStream
+    }
+    val xvfbPid = outputStream.toString().trim()
+    exec {
+        commandLine("sh", "-c", "fluxbox -display " + display + " -log /dev/null >>/dev/null  & echo $!")
+        standardOutput = outputStream
+        errorOutput = outputStream
+    }
+    return xvfbPid
 }
 
-tasks.check {
-    dependsOn("testAr", "testCa", "testRu", "testUk")
+fun stopX(pid: String) {
+    val outputStream = ByteArrayOutputStream()
+    exec {
+        commandLine("sh", "-c", "kill $pid")
+        standardOutput = outputStream
+        errorOutput = outputStream
+    }
 }
+
+// Function to detect if the OS is Linux
+fun isLinux(): Boolean = System.getProperty("os.name").lowercase().contains("linux")
+
+// Function to check if Xvfb is installed
+fun isCommandAvailable(command: String): Boolean {
+    val outputStream = ByteArrayOutputStream()
+    return exec {
+        commandLine("sh", "-c", "command -v " + command)
+        isIgnoreExitValue = true // Don't fail if command is not found
+        standardOutput = outputStream
+        errorOutput = outputStream
+    }.exitValue.equals(0)
+}
+
+fun makeTestTask(taskName: String, lang: String, country: String, display: String) {
+    tasks.register<Test>(taskName) {
+        systemProperty("user.language", lang)
+        systemProperty("user.country", country)
+        group = "verification"
+        onlyIf {
+            isLinux() && isCommandAvailable("Xvfb")
+        }
+        doFirst {
+            val xvfbPid = startX(display)
+            extensions.extraProperties["xvfbPid"] = xvfbPid
+            environment["DISPLAY"] = display
+            println("Virtual X server is started with DISPLAY $display and PID: $xvfbPid")
+        }
+        doLast {
+            val pid = extensions.extraProperties["xvfbPid"] as String
+            println("Stopping virtual X server for " + taskName + "...")
+            stopX(pid)
+        }
+    }
+    tasks.check {dependsOn(taskName)}
+}
+makeTestTask("testAr", "ar", "SA", ":99")
+makeTestTask("testCa", "ca", "ES", ":100")
+makeTestTask("testRu", "ru", "RU", ":101")
+makeTestTask("testUk", "uk", "UK", ":102")
 
 val ossrhUsername: String? by project
 val ossrhPassword: String? by project
