@@ -35,6 +35,20 @@ The library supports the following languages;
 
 You are welcome to contribute the localization.
 
+## Working in translation
+
+
+| Language         | Locale ID |
+|------------------|-----------|
+| Afrikaans        | af        |
+| Bahasa Indonesia | id        | 
+| Latovian         | lv        |
+| Lithuanian       | lt        |
+| Mongolian        | mn        |
+| Romanian         | ro        |
+
+
+
 ## Development status
 
 The library is currently under active development, it is considered as a BETA state.
