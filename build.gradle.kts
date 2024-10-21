@@ -134,7 +134,7 @@ fun startX(display: String): String {
 fun stopX(pid: String) {
     val outputStream = ByteArrayOutputStream()
     exec {
-        commandLine("sh", "-c", "kill $pid")
+        commandLine("sh", "-c", "kill $pid &")
         standardOutput = outputStream
         errorOutput = outputStream
     }
