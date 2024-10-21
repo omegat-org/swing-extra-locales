@@ -128,13 +128,7 @@ fun startX(display: String): String {
         commandLine("sh", "-c", "Xvfb " + display + " -screen 0 1280x1024x24 >>/dev/null 2>&1 & echo $!")
         standardOutput = outputStream
     }
-    val xvfbPid = outputStream.toString().trim()
-    exec {
-        commandLine("sh", "-c", "fluxbox -display " + display + " -log /dev/null >>/dev/null  & echo $!")
-        standardOutput = outputStream
-        errorOutput = outputStream
-    }
-    return xvfbPid
+    return outputStream.toString().trim()
 }
 
 fun stopX(pid: String) {
