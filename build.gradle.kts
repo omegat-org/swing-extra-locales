@@ -155,6 +155,18 @@ fun isCommandAvailable(command: String): Boolean {
 }
 
 fun makeTestTask(taskName: String, lang: String, country: String, display: String) {
+
+    project.extensions.extraProperties["${lang}xvfbPid"] = ""
+
+    val testFinally = tasks.register("${taskName}Finally") {
+        outputs.upToDateWhen { false } // always run
+        doLast {
+            val pid = project.extensions.extraProperties["${lang}xvfbPid"] as String
+            println("Stopping virtual X server for " + taskName + "...")
+            stopX(pid)
+        }
+    }
+
     tasks.register<Test>(taskName) {
         systemProperty("user.language", lang)
         systemProperty("user.country", country)
@@ -164,15 +176,11 @@ fun makeTestTask(taskName: String, lang: String, country: String, display: Strin
         }
         doFirst {
             val xvfbPid = startX(display)
-            extensions.extraProperties["xvfbPid"] = xvfbPid
+            project.extensions.extraProperties["${lang}xvfbPid"] = xvfbPid
             environment["DISPLAY"] = display
             println("Virtual X server is started with DISPLAY $display and PID: $xvfbPid")
         }
-        doLast {
-            val pid = extensions.extraProperties["xvfbPid"] as String
-            println("Stopping virtual X server for " + taskName + "...")
-            stopX(pid)
-        }
+        finalizedBy(testFinally)
     }
     tasks.check {dependsOn(taskName)}
 }
